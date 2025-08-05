@@ -1,44 +1,23 @@
 from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
-from sqlmodel import select
 
-from database import SessionDep, create_db_and_tables
-from models import Book
+from src.database import create_db_and_tables
+from src.routers import authors, books
+
 
 app = FastAPI()
+
+app.include_router(books.router)
+app.include_router(authors.router)
 
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
 
-@app.post("/books/")
-def create_book(book: Book, session: SessionDep) -> Book:
-    session.add(book)
-    session.commit()
-    session.refresh(book)
-    return book
-
-@app.delete("/books/{book_id}")
-def delete_book(book_id: int, session: SessionDep):
-    book = session.get(Book, book_id)
-    if not book:
-        raise HTTPException(status_code=404, detail="Book not found")
-    session.delete(book)
-    session.commit()
-    return {"sucess": True}
-
-@app.get("/books/{book_id}")
-def read_book(session: SessionDep, book_id: int):
-    book = session.get(Book, book_id)
-    if not book:
-        raise HTTPException(status_code=404, detail="book not found")
-    return book
-
-@app.get("/books/")
-def read_books(session: SessionDep):
-    books = session.exec(select(Book)).all()
-    return books
+@app.get("/")
+async def root():
+    return {"message": "Hello Bigger Applications!"}
 
 #------------------------------------------------------- 
 
