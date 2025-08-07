@@ -3,6 +3,9 @@ from sqlmodel import Relationship, SQLModel, Field
 
 from src.schemas.link import BookAuthorLink
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from .book import Book
 
 class AuthorBase(SQLModel):
     first_name: str

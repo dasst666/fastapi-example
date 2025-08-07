@@ -3,7 +3,7 @@ from sqlmodel import select
 
 from src.crud import create_book
 from src.database import SessionDep
-from src.schemas.book import Book, BookBase, BookPublic
+from src.schemas.book import Book, BookBase, BookCreate, BookPublic
 
 router = APIRouter(
     prefix="/books",
@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 @router.post("/")
-def create_book_route(book: BookBase, session: SessionDep):
+def create_book_route(book: BookCreate, session: SessionDep):
     return create_book(book, session)
 
 @router.delete("/{book_id}")
