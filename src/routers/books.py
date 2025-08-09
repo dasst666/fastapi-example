@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from sqlmodel import select
 
-from src.crud import create_book
+from src.crud.book import create_book, delete_book
 from src.database import SessionDep
 from src.schemas.book import Book, BookBase, BookCreate, BookPublic
 
@@ -16,13 +16,11 @@ def create_book_route(book: BookCreate, session: SessionDep):
     return create_book(book, session)
 
 @router.delete("/{book_id}")
-def delete_book(book_id: int, session: SessionDep):
-    book = session.get(Book, book_id)
-    if not book:
+def delete_book_route(book_id: int, session: SessionDep):
+    success = delete_book(book_id, session)
+    if not success:
         raise HTTPException(status_code=404, detail="Book not found")
-    session.delete(book)
-    session.commit()
-    return {"sucess": True}
+    return {"success": True}
 
 @router.get("/{book_id}", response_model=BookPublic)
 def read_book(session: SessionDep, book_id: int):
