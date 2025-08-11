@@ -1,6 +1,9 @@
 from typing import Annotated
 from fastapi import Depends
 from sqlmodel import SQLModel, Session, create_engine
+from dotenv import load_dotenv
+
+load_dotenv()
 
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
