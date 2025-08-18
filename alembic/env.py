@@ -14,8 +14,9 @@ from sqlmodel import SQLModel
 from src.database import engine
 from src.schemas.book import Book
 from src.schemas.author import Author
-
-target_metadata = SQLModel.metadata
+from src.schemas.user import User
+from src.schemas.token import Token
+from src.schemas.link import BookAuthorLink
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -31,6 +32,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
+target_metadata = SQLModel.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
