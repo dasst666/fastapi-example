@@ -9,6 +9,7 @@ def create_author(author: AuthorBase, session: SessionDep):
     session.refresh(db_author)
     return db_author
 
+
 def delete_author(author_id: int, session: SessionDep):
     author = session.get(Author, author_id)
     if not author:

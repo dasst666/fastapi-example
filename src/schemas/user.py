@@ -1,11 +1,13 @@
-from typing import Optional
-from pydantic import EmailStr, field_validator
-from sqlmodel import SQLModel, Field
-
 from enum import Enum
+from typing import Optional
+
+from pydantic import EmailStr, field_validator
+from sqlmodel import Field, SQLModel
+
 
 class UserBase(SQLModel):
     email: EmailStr
+
 
 class UserCreate(UserBase):
     password: str
@@ -20,15 +22,17 @@ class UserCreate(UserBase):
             raise ValueError("Пароль должен содержать хотя бы одну заглавную букву")
         return v
 
+
 class RoleEnum(str, Enum):
     user = "user"
     admin = "admin"
+
 
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     hashed_password: str
     role: RoleEnum = Field(default=RoleEnum.user)
 
+
 class UserPublic(UserBase):
     id: int
-    

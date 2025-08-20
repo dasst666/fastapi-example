@@ -5,10 +5,8 @@ from src.crud.user import create_user, get_user_by_email
 from src.database import SessionDep
 from src.schemas.user import User, UserCreate, UserPublic
 
-router = APIRouter(
-    prefix="/users",
-    tags=["Users"]
-)
+router = APIRouter(prefix="/users", tags=["Users"])
+
 
 @router.post("/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
 def register_user(user_data: UserCreate, session: SessionDep):
@@ -16,6 +14,7 @@ def register_user(user_data: UserCreate, session: SessionDep):
     if existing_user:
         raise HTTPException(status_code=400, detail="Email уже зарегистрирован")
     return create_user(session, user_data)
+
 
 @router.get("/")
 def get_user_list(session: SessionDep):

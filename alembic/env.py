@@ -1,22 +1,21 @@
+import pathlib
+import sys
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-
-import sys
-import pathlib
 
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[1] / "src"))
 
 from sqlmodel import SQLModel
+
 from src.database import engine
-from src.schemas.book import Book
 from src.schemas.author import Author
-from src.schemas.user import User
-from src.schemas.token import Token
+from src.schemas.book import Book
 from src.schemas.link import BookAuthorLink
+from src.schemas.token import Token
+from src.schemas.user import User
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -78,9 +77,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
